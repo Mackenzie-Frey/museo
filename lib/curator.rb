@@ -10,15 +10,6 @@ class Curator
     @photographs << photo
   end
 
-  # def name
-  #   binding.pry
-  #   if object == photograph collection
-  #     @photographs[0][:name]
-  #   elsif object == artist collection
-  #     @artists[0][:name]
-  #   end
-  # end
-
   def add_artist(artist)
     @artists << artist
   end
@@ -32,6 +23,11 @@ class Curator
   end
 
   def find_photograph_by_id(id)
+    @photographs.map do |photograph|
+      if photograph.id == id
+        return artist
+      end
+    end
   end
 
 end
