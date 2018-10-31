@@ -31,16 +31,32 @@ class Curator
     end
   end
 
-  def find_photographs_by_artist(artist)
-    specific_artist_collection = []
-    @photographs.each do |photo|
-      binding.pry
-      # iterate through @artists to find the id that matches the photo id
-      if @artists == photo.artist_id
-        specific_artist_collection << photo
+  def find_artist_by_id(id)
+    @artists.map do |artist|
+      if artist.id == id
+        return artist
       end
     end
-    specific_artist_collection
+  end
+
+  def find_photographs_by_artist(artist)
+    specific_artist_photos = []
+    @photographs.each do |photo|
+      if photo.artist_id == find_artist_by_id(artist.id).id
+        specific_artist_photos << photo
+      end
+    end
+    specific_artist_photos
+  end
+
+  def artists_with_multiple_photographs
+    artist_with_multiple = []
+    @artists.each do |artist|
+      if find_photographs_by_artist(artist).count > 1
+        artist_with_multiple << artist
+      end
+    end
+    artist_with_multiple
   end
 
 end
