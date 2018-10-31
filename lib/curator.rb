@@ -24,8 +24,8 @@ class Curator
 
   def find_photograph_by_id(id)
     @photographs.map do |photograph|
-      if photograph.id == id
-        return artist
+      if photograph.id.to_s == id
+        return photograph
       end
     end
   end
