@@ -38,24 +38,24 @@ class CuratorTest < Minitest::Test
   end
 
   def test_it_knows_photo_order_and_attributes
-skip
     curator = Curator.new
-    photo_1 = {
+    attributes_1 = {
       id: "1",
       name: "Rue Mouffetard, Paris (Boy with Bottles)",
       artist_id: "1",
       year: "1954"
     }
-    photo_2 = {
+    attributes_2 = {
       id: "2",
       name: "Moonrise, Hernandez",
       artist_id: "2",
       year: "1941"
     }
+    photo_1 = Photograph.new(attributes_1)
+    photo_2 = Photograph.new(attributes_2)
     curator.add_photograph(photo_1)
     curator.add_photograph(photo_2)
     assert_equal photo_1, curator.photographs.first
-    # photograph = Photograph.new([photo_1, photo_2])
     assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", curator.photographs.first.name
   end
 
@@ -84,6 +84,7 @@ skip
   end
 
   def test_it_can_find_artists_by_id
+skip
     curator = Curator.new
     artist_1 = {
       id: "1",
