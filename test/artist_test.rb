@@ -2,7 +2,6 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/photograph'
 require './lib/artist'
-require 'pry'
 
 class ArtistTest < Minitest::Test
 
