@@ -59,4 +59,26 @@ class Curator
     artist_with_multiple
   end
 
+  def photographs_taken_by_artists_from(location)
+    @artists.map do |artist|
+      if artist.country == location
+        find_photographs_by_artist(artist)
+      end
+    end.flatten.compact
+  end
+
+  def load_photographs(csv_filepath)
+    row_objects = CSV.read(csv_filepath, headers: true, header_converters: :symbol)
+      @photographs = row_objects.map do |row|
+        Photograph.new(row)
+binding.pry
+      end
+  end
+
+  def load_artists
+  end
+
+  def artists_photographs_by_age
+  end
+
 end

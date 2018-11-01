@@ -3,6 +3,8 @@ require 'minitest/pride'
 require './lib/photograph'
 require './lib/artist'
 require './lib/curator'
+require 'CSV'
+require 'pry'
 
 class CuratorTest < Minitest::Test
 
@@ -318,8 +320,107 @@ class CuratorTest < Minitest::Test
     curator.add_artist(artist_1)
     curator.add_artist(artist_2)
     curator.add_artist(artist_3)
+    diane_arbus = curator.find_artist_by_id("3")
     assert_equal [artist_3], curator.artists_with_multiple_photographs
     assert_equal 1, curator.artists_with_multiple_photographs.length
+    assert_equal true, diane_arbus == curator.artists_with_multiple_photographs.first
   end
 
+  def test_it_photographs_taken_by_artists_from
+    attributes_1_photo = {
+      id: "1",
+      name: "Rue Mouffetard, Paris (Boy with Bottles)",
+      artist_id: "1",
+      year: "1954"
+    }
+    attributes_2_photo = {
+      id: "2",
+      name: "Moonrise, Hernandez",
+      artist_id: "2",
+      year: "1941"
+    }
+    attributes_3_photo = {
+      id: "3",
+      name: "Identical Twins, Roselle, New Jersey",
+      artist_id: "3",
+      year: "1967"
+    }
+    attributes_4_photo = {
+      id: "4",
+      name: "Child with Toy Hand Grenade in Central Park",
+      artist_id: "3",
+      year: "1962"
+    }
+    attributes_1_artist = {
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+    }
+    attributes_2_artist = {
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+    }
+    attributes_3_artist = {
+      id: "3",
+      name: "Diane Arbus",
+      born: "1923",
+      died: "1971",
+      country: "United States"
+    }
+    photo_1 = Photograph.new(attributes_1_photo)
+    photo_2 = Photograph.new(attributes_2_photo)
+    photo_3 = Photograph.new(attributes_3_photo)
+    photo_4 = Photograph.new(attributes_4_photo)
+    artist_1 = Artist.new(attributes_1_artist)
+    artist_2 = Artist.new(attributes_2_artist)
+    artist_3 = Artist.new(attributes_3_artist)
+    curator = Curator.new
+    curator.add_photograph(photo_1)
+    curator.add_photograph(photo_2)
+    curator.add_photograph(photo_3)
+    curator.add_photograph(photo_4)
+    curator.add_artist(artist_1)
+    curator.add_artist(artist_2)
+    curator.add_artist(artist_3)
+    assert_equal [photo_2, photo_3, photo_4], curator.photographs_taken_by_artists_from("United States")
+    assert_equal [], curator.photographs_taken_by_artists_from("Argentina")
+  end
+
+  def test_it_can_load_photographs
+skip
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    assert_equal 4, @photographs.count
+  end
+
+  def test_load_artists
+skip
+    curator = Curator.new
+    curator.load_artists('./data/artists.csv')
+    assert_equal 3, @artists.count
+  end
+
+  def test_it_can_load_photo_year_range
+skip
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    actual = curator.photographs_taken_between(1950..1965)
+    assert_equal [photo, photo], actual
+    #how to name the objects in the above photos
+  end
+
+  def test_it_collects_artist_age_with_photo_name
+skip
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    curator.load_artists('./data/artists.csv')
+    diane_arbus = curator.find_artist_by_id("3")
+    curator.artists_photographs_by_age(diane_arbus)
+    assert_equal ({44=>"Identical Twins, Roselle, New Jersey", 39=>"Child with Toy Hand Grenade in Central Park"})
+  end
 end
